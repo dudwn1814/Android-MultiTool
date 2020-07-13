@@ -27,18 +27,20 @@
                 android:id="@+id/tabPop1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="#FDF5E6">
+                android:orientation="vertical">
 
 
                 <ListView
                     android:id="@+id/listView1"
+                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fastScrollEnabled="true"
                     android:cacheColorHint="#ffccff"
-                    android:divider="#ffffff"
+                    android:divider="#00FFFFFF"
                     android:dividerHeight="1sp" >
+
+
                 </ListView>
             </LinearLayout>
 
@@ -47,14 +49,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="#C7D6FF"
                 tools:context="com.mobapptut.mediathumbviewer.MediaThumbMainActivity">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/thumbnailRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
+                    android:layout_height="match_parent"/>
 
             </LinearLayout>
 
@@ -97,6 +97,7 @@
                     android:textSize="30dp"
                     android:layout_weight="1"
                     android:text="번역 결과" />
+
 
             </LinearLayout>
         </FrameLayout>

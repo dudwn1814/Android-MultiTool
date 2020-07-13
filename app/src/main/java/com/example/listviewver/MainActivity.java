@@ -18,12 +18,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +37,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -41,6 +48,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -49,6 +57,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity
@@ -81,24 +91,24 @@ public class MainActivity extends AppCompatActivity
 
         checkReadExternalStoragePermission();
 
-
         tabHost = (TabHost) findViewById(R.id.tabhost);
+
+
         tabHost.setup();
 
-        TabHost.TabSpec tabSpecPhone = tabHost.newTabSpec("PHONE").setIndicator("전화번호");
-        tabSpecPhone.setContent(R.id.tabPop1);
+        TabHost.TabSpec tabSpecPhone = tabHost.newTabSpec("PHONE").setIndicator("", getResources().getDrawable(R.drawable.contact));
+       tabSpecPhone.setContent(R.id.tabPop1);
         tabHost.addTab(tabSpecPhone);
 
-        TabHost.TabSpec tabSpecGallery = tabHost.newTabSpec("GALLERY").setIndicator("갤러리");
+        TabHost.TabSpec tabSpecGallery = tabHost.newTabSpec("GALLERY").setIndicator("", getResources().getDrawable(R.drawable.photo));
         tabSpecGallery.setContent(R.id.tabPop2);
         tabHost.addTab(tabSpecGallery);
 
-        TabHost.TabSpec tabSpecMy = tabHost.newTabSpec("MY").setIndicator("MY");
+        TabHost.TabSpec tabSpecMy = tabHost.newTabSpec("MY").setIndicator("", getResources().getDrawable(R.drawable.translate));
         tabSpecMy.setContent(R.id.tabPop3);
         tabHost.addTab(tabSpecMy);
 
         tabHost.setCurrentTab(0);
-
 
         ll = (LinearLayout) findViewById(R.id.tabPop1);
 
@@ -281,16 +291,16 @@ public class MainActivity extends AppCompatActivity
             // TODO Auto-generated method stub
             ArrayList<String> contacts = new ArrayList<String>();
 
+
             Cursor c = getContentResolver().query(
                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     null, null, null);
             while (c.moveToNext()) {
 
-                String contactName = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String contactName =  c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String phNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                contacts.add(contactName + "\n" + phNumber);
-
+                contacts.add(contactName + "\n" + phNumber + "\n");
             }
             Collections.sort(contacts);
             c.close();
