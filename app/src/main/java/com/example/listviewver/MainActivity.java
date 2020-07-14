@@ -2,6 +2,8 @@ package com.example.listviewver;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,12 +16,8 @@ import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -32,10 +30,12 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -43,7 +43,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity
@@ -62,9 +61,12 @@ public class MainActivity extends AppCompatActivity
 
     //trans
     private EditText translationText;
-    private Button translationButton;
+    private Button translationButton, SwitchButton;
     private TextView resultText;
     private String result;
+
+    String sourceLang = "ko";
+    String targetLang = "en";
 
 
     @Override
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity
         //-----------------------------------Tab3----------------------------------------------
         translationText = (EditText)findViewById(R.id.translationText);
         translationButton = (Button)findViewById(R.id.translationButton);
+        SwitchButton = (Button)findViewById(R.id.kotoen);
         resultText = (TextView)findViewById(R.id.resultText);
 
         //번역결과 스크롤 가능
@@ -121,6 +124,28 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 new BackgroundTask().execute();
+            }
+        });
+
+        SwitchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(sourceLang.equals("ko")){
+                    sourceLang = "en";
+                    targetLang = "ko";
+                    SwitchButton.setText("영 ↔ 한");
+                    translationText.setText(null);
+                    resultText.setText(null);
+                    translationText.setHint("번역할 영어를 입력하세요");
+                }
+                else{
+                    sourceLang = "ko";
+                    targetLang = "en";
+                    SwitchButton.setText("한 ↔ 영");
+                    translationText.setText(null);
+                    resultText.setText(null);
+                    translationText.setHint("번역할 한글을 입력하세요");
+                }
             }
         });
     }
@@ -274,7 +299,7 @@ public class MainActivity extends AppCompatActivity
                 con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
 
                 // post request
-                String postParams = "source=ko&target=en&text=" + text;
+                String postParams = "source="+sourceLang+"&target="+targetLang+"&text=" + text;
                 con.setDoOutput(true);
                 DataOutputStream wr = new DataOutputStream(con.getOutputStream());
                 wr.writeBytes(postParams);
