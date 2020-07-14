@@ -10,17 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-
 import java.io.File;
 
-/**
- * Created by nigelhenshaw on 1/06/2016.
- */
 public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.ViewHolder> {
 
     private Cursor mMediaStoreCursor;
@@ -45,12 +38,6 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        /*
-        Bitmap bitmap = getBitmapFromMediaStore(position);
-        if (bitmap != null) {
-            holder.getImageView().setImageBitmap(bitmap);
-        }
-        */
         Glide.with(mActivity)
                 .load(getUriFromMediaStore(position))
                 .centerCrop()
@@ -146,7 +133,6 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
         String dataString = mMediaStoreCursor.getString(dataIndex);
         String authorities = mActivity.getPackageName() + ".fileprovider";
         Uri mediaUri = FileProvider.getUriForFile(mActivity, authorities, new File(dataString));
-//        Uri mediaUri = Uri.parse("file://" + dataString);
 
         switch (mMediaStoreCursor.getInt(mediaTypeIndex)) {
             case MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE:
@@ -157,6 +143,5 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
                 break;
             default:
         }
-
     }
 }

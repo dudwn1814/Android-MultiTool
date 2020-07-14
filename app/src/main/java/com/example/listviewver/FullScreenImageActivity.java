@@ -3,18 +3,12 @@ package com.example.listviewver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ShareActionProvider;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 
-public class FullScreenImageActivity extends AppCompatActivity implements
-        View.OnLongClickListener {
+public class FullScreenImageActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     private Uri mImageUri;
 
@@ -26,44 +20,30 @@ public class FullScreenImageActivity extends AppCompatActivity implements
         ImageView fullScreenImageView = (ImageView) findViewById(R.id.fullScreenImageView);
         fullScreenImageView.setOnLongClickListener(this);
 
+        //이미지 Uri 받기
         Intent callingActivityIntent = getIntent();
         if(callingActivityIntent != null) {
             mImageUri = callingActivityIntent.getData();
             if(mImageUri != null && fullScreenImageView != null) {
-                Glide.with(this)
-                        .load(mImageUri)
-                        .into(fullScreenImageView);
+                Glide.with(this).load(mImageUri).into(fullScreenImageView);
             }
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+//원래 공유버튼이 있었는데,, 없어져서 일단 주석처리함
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        super.onCreateOptionsMenu(menu);
+//
+//        getMenuInflater().inflate(R.menu.full_image_share, menu);
+//
+//        MenuItem menuItem = menu.findItem(R.id.image_share_menu);
+//        ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+//        shareActionProvider.setShareIntent(createShareIntent());
+//        return true;
+//    }
 
-        getMenuInflater().inflate(R.menu.full_image_share, menu);
-
-        MenuItem menuItem = menu.findItem(R.id.image_share_menu);
-        ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-        shareActionProvider.setShareIntent(createShareIntent());
-        return true;
-    }
-
-/*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.image_share_menu:
-                Toast.makeText(this, "share image button selected!", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                super.onOptionsItemSelected(item);
-        }
-        
-        return true;
-    }
-*/
-
+    //이미지 공유
     private Intent createShareIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("image/*");
@@ -73,7 +53,6 @@ public class FullScreenImageActivity extends AppCompatActivity implements
 
     @Override
     public boolean onLongClick(View v) {
-
         Intent shareIntent = createShareIntent();
         startActivity(Intent.createChooser(shareIntent, "send to"));
         return true;

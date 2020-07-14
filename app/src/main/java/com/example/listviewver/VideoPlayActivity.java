@@ -47,6 +47,7 @@ public class VideoPlayActivity extends AppCompatActivity {
             }
         }
     };
+
     private PlaybackStateCompat.Builder mPBuilder;
     private MediaSessionCompat mSession;
     private class MediaSessionCallback extends MediaSessionCompat.Callback implements SurfaceHolder.Callback, MediaPlayer.OnCompletionListener,
@@ -167,7 +168,6 @@ public class VideoPlayActivity extends AppCompatActivity {
             }
         }
     }
-
 
 
     @Override

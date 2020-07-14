@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
    >
 
+<!-- 갤러리 - 이미지 클릭시 큰 화면 -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
